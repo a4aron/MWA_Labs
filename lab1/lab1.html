@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Style-Type" content="text/css" /> 
+    <title>Assignment 1</title>
+    <script src="https://code.jquery.com/jquery-3.3.1.js"  integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+  crossorigin="anonymous"></script>
+    <script src ="https://unpkg.com/rxjs/bundles/rxjs.umd.min.js" type="text/javascript"></script> 
+    <!-- <script src="js/script.js"></script> -->
+  </head>
+  <body>
+      <form>
+        <input type="text" id="searchbox" placeholder="Team Name" />
+        <button type="button" id="searchButton">Search</button>
+      </form>
+      <table border="1">
+        <thead>
+            <th>Country
+            </th>
+        </thead>
+        <tbody>
+            <tr></tr>
+        </tbody>
+      </table>
+<!-- scripts -->
+
+<script>
+    const { Observable, from , fromEvent } = rxjs;
+    const { map, flatMap, mergeAll, filter, debounceTime } = rxjs.operators;
+    var countryId;
+     
+    const btnsearch = document.getElementById('searchButton');
+    const txtSearch = document.getElementById('searchbox');
+    const obs = fromEvent(btnsearch, 'click');
+
+    obs
+    .pipe(
+      debounceTime(200),
+      map(event => txtSearch.value)
+    )
+    .subscribe(
+     countryname => {
+        //  console.log(countryname);
+         var dataPromise = fetch("http://worldcup.sfg.io/teams").then(r => r.json());
+         dataPromise.then(records =>
+        from(records).pipe(
+            filter(record=> record.country.toLowerCase() == countryname.toLowerCase()), 
+            map(x => x.group_id)
+            )
+            .subscribe(
+                x => {
+                    countryId = x;
+                    console.log(countryId);
+                }
+            )
+        )
+        dataPromise.then(records =>
+        from(records)
+            .pipe(
+                filter(x => x.group_id === countryId)
+                , map(x => x.country)
+            )
+            .subscribe(x => {
+                $("tbody").append("<tr><td>"+x)
+            }))
+    }
+    )
+  </script>
+  </body>
+</html>
