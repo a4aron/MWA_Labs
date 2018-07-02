@@ -9,7 +9,7 @@ app.set('strict routing',true)
 app.set('x-powered-by',false)
 
 app.get('/users',(req,resp) => {
-    var getdata = async function getUserJSON(){
+    var getUserJSON = async function (){
         try{
             const response = await axios.get("http://jsonplaceholder.typicode.com/users");
             resp.send(response.data)
@@ -18,6 +18,6 @@ app.get('/users',(req,resp) => {
             console.log(err)
         }
     }
-    getdata();
+    getUserJSON();
 })
 app.listen(8888)
