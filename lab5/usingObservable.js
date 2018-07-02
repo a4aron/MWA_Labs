@@ -1,5 +1,6 @@
 const express = require('express')
 const axios = require('axios')
+const { from } = require('rxjs')
 var app = express();
 
 //configurations
@@ -9,11 +10,10 @@ app.set('strict routing',true)
 app.set('x-powered-by',false)
 
 app.get('/users',(req,resp) => {
-    axios.get("http://jsonplaceholder.typicode.com/users")
-    .then(response => {
+    from(axios.get("http://jsonplaceholder.typicode.com/users"))
+    .subscribe(response => {
         resp.send(response.data)
     })
-    .catch(err => resp.send(err))
 })
 
 app.listen(8888)
