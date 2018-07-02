@@ -1,0 +1,35 @@
+If we want to build a web-server using Node.js, or basically any application, then one of the important things is to be able to read the content of a file.
+
+Node provides the fs library to handle file-system related operations. For example to read the content of a file.
+
+Read file in asynchronously (non-blocking)
+The "normal" way in Node.js is probably to read in the content of a file in a non-blocking, asynchronous way. That is, to tell Node to read in the file, and then to get a callback when the file-reading has been finished. That would allow us to hand several requests in parallel.
+
+For this we can use the readFile method of the fs class.
+
+examples/node/non-blocking-read-file.js
+
+var fs = require('fs');
+ 
+fs.readFile('DATA', 'utf8', function(err, contents) {
+    console.log(contents);
+});
+ 
+console.log('after calling readFile');
+ 
+First we load the fs class using the require command. Then we call the readFile method that gets 3 parameters: The name of the file ('DATA' in this case), the encoding of the file ('utf8' in the examples), and a function. This function is going to be called when the file-reading operation has finished. The function will get two parameters. The first is the information about any error conditions, the second is the actual content of the file.
+
+Once this is called Node starts to read the file in the background, but it also keeps executing our program. That is, it will call the console.log('after calling readFile'); and will print that text to the console. Then, once the file has been read into memory, Node will run the function we provided to the readFile method and that will print the content of the file.
+
+Read file in synchronously (blocking)
+People coming from almost every other programming language and environment will find the synchronous file-reading operation clearer. I am not sure when will you want to use synchronous operations in Node.js, but I see that many of the asynchronous functions have a synchronous counterpart, so there might be a use.
+
+For reading a file you can use the readFileSync method of the fs class:
+
+examples/node/blocking-read-file.js
+
+var fs = require('fs');
+ 
+var contents = fs.readFileSync('DATA', 'utf8');
+console.log(contents);
+ 
