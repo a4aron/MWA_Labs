@@ -1,0 +1,15 @@
+{
+    "ISBN" : "",
+    "title" : "",
+    "published_Date" : "",
+    "is_Available" : "",
+    "tags" : ["","",""],
+    "authors" : [{"name": ""},{"name": ""},{"name": ""}],
+    "borrowDetails": [
+        {
+            "issuedDate" : "",
+            "returnDate" : "",
+            "student" : ""
+         }
+    ]
+}
