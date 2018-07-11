@@ -11,9 +11,9 @@ app.set('x-powered-by',false)
 app.get('/users',(req,resp) => {
     axios.get("http://jsonplaceholder.typicode.com/users")
     .then(response => {
-        resp.send(response.data)
+        resp.json(response.data)
     })
-    .catch(err => resp.send(err))
+    .catch(err => resp.json(err))
 })
 
 app.listen(8888)
